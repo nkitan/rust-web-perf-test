@@ -50,13 +50,14 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build and test webservers
       run:  |
-      if [[ $run_job == "true" ]]; then
-        cd actix-webserver
-        cargo build --verbose
-        cargo test --verbose
-        cd ../axum-webserver
-        cargo build --verbose
-        cargo test --verbose
-      else  
-        echo "skipping rust workflow"
-      fi
+        echo "Trigger Rust Workflow = ${run_job}"
+        if [[ $run_job == "true" ]]; then
+          cd actix-webserver
+          cargo build --verbose
+          cargo test --verbose
+          cd ../axum-webserver
+          cargo build --verbose
+          cargo test --verbose
+        else  
+          echo "skipping rust workflow"
+        fi

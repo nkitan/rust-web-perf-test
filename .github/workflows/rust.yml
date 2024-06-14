@@ -40,9 +40,6 @@ jobs:
               echo "${file} is not under the actix-webserver or axum-webserver"
             fi
           done < files.txt
-      - name: Run Build
-        run:
-          build_webservers
 
   build_webservers:
     name: Build both Web Servers

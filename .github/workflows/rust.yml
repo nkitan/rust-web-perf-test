@@ -34,30 +34,15 @@ jobs:
             echo $file
             if [[ $file == "actix-webserver/"* || $file == "axum-webserver/"* ]]; then
               echo "${file} is under the actix-webserver or axum-webserver"
-              echo "run_job=true" >> $GITHUB_ENV
+              cd actix-webserver
+              cargo build --verbose
+              cargo test --verbose
+              cd ../axum-webserver
+              cargo build --verbose
+              cargo test --verbose
               break
             else
               echo "${file} is not under the actix-webserver or axum-webserver"
-              echo "run_job=false" >> $GITHUB_ENV
+              echo "skipping rust workflow"
             fi
           done < files.txt
-
-  build_webservers:
-    name: Build both Web Servers
-    needs: check
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build and test webservers
-      run:  |
-        echo "Trigger Rust Workflow = ${run_job}"
-        if [[ $run_job == "true" ]]; then
-          cd actix-webserver
-          cargo build --verbose
-          cargo test --verbose
-          cd ../axum-webserver
-          cargo build --verbose
-          cargo test --verbose
-        else  
-          echo "skipping rust workflow"
-        fi

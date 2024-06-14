@@ -32,12 +32,12 @@ jobs:
           while IFS= read -r file
           do
             echo $file
-            if [[ $file != "actix-webserver/"* || $file != "axum-webserver/"* ]]; then
-              echo "This file is not under the actix-webserver or axum-webserver."
-              echo "{run_job}={false}" >> $GITHUB_OUTPUT
+            if [[ $file == "actix-webserver/"* || $file == "axum-webserver/"* ]]; then
+              echo "This file is under the actix-webserver or axum-webserver."
+              echo "{run_job}={true}" >> $GITHUB_OUTPUT
               break
             else
-              echo "{run_job}={true}" >> $GITHUB_OUTPUT
+              echo "{run_job}={false}" >> $GITHUB_OUTPUT
             fi
           done < files.txt
 

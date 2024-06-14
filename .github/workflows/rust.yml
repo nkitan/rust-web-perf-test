@@ -33,11 +33,11 @@ jobs:
           do
             echo $file
             if [[ $file == "actix-webserver/"* || $file == "axum-webserver/"* ]]; then
-              echo `{$file} is under the actix-webserver or axum-webserver.`
+              echo "${file} is under the actix-webserver or axum-webserver"
               echo "{run_job}={true}" >> $GITHUB_OUTPUT
               break
             else
-              echo `{$file} is under the actix-webserver or axum-webserver.`
+              echo "${file} is under the actix-webserver or axum-webserver"
               echo "{run_job}={false}" >> $GITHUB_OUTPUT
             fi
           done < files.txt

@@ -38,6 +38,7 @@ jobs:
               break
             else
               echo "${file} is not under the actix-webserver or axum-webserver"
+              echo "run_job=false" >> $GITHUB_ENV
             fi
           done < files.txt
 

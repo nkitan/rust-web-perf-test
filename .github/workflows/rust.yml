@@ -1,0 +1,62 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    name: Check changed files
+    outputs:
+      run_job: ${{ steps.check_files.outputs.run_job }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: check files
+        id: check_files
+        run: |
+          echo "=============== list changed files ==============="
+          git diff --name-only HEAD^ HEAD
+          
+          echo "========== check paths of changed files =========="
+          git diff --name-only HEAD^ HEAD >> files.txt
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file != "actix-webserver/"* || $file != "axum-webserver/"* ]]; then
+              echo "This file is not under the actix-webserver or axum-webserver."
+              echo "::set-output name=run_job::false"
+              break
+            else
+              echo "::set-output name=run_job::true"
+            fi
+          done < files.txt
+
+  build_webservers:
+    name: Build both Web Servers
+    needs: check
+    if: needs.check.outputs.run_job == 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Go to Actix Webserver
+    - run: cd actix-webserver
+    - name: Build
+      run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
+    - name: Go to Axum Webserver
+    - run: cd ../axum-webserver
+    - name: Build
+      run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose  

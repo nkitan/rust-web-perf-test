@@ -60,22 +60,22 @@ def load_test(url, ws_url):
     # POST requests
     for _ in range(5000):
         response = requests.post(url, json=data)
-        log.append(f"POST {url}: {response.status_code}")
+        log.append(f"{datetime.now()} POST {url}: {response.status_code}")
 
     # GET requests
     for _ in range(5000):
         response = requests.get(url)
-        log.append(f"GET {url}: {response.status_code}")
+        log.append(f"{datetime.now()} GET {url}: {response.status_code}")
 
     # PUT requests
     for _ in range(5000):
         response = requests.put(f"{url}/1", json=data)
-        log.append(f"PUT {url}/1: {response.status_code}")
+        log.append(f"{datetime.now()} PUT {url}/1: {response.status_code}")
 
     # DELETE requests
     for _ in range(5000):
         response = requests.delete(f"{url}/1")
-        log.append(f"DELETE {url}/1: {response.status_code}")
+        log.append(f"{datetime.now()} DELETE {url}/1: {response.status_code}")
 
     ws.close()
     ws_thread.join()
@@ -146,10 +146,15 @@ def run_test(program_path, url, ws_url, log_file):
 
 # Main function to run the tests for Actix and Axum
 def main():
-    print(f"HW_TEST {'enabled' if HW_TEST == True else 'disabled'}")
-    run_test(ACTIX_PROGRAM_PATH, ACTIX_URL, ACTIX_WS_URL, "actix_log_singleuser")
-    run_test(AXUM_PROGRAM_PATH, AXUM_URL, AXUM_WS_URL, "axum_log_singleuser")
-    run_test(ROCKET_PROGRAM_PATH, ROCKET_URL, ROCKET_WS_URL, "rocket_log_singleuser")
+    try:
+        print(f"HW_TEST {'enabled' if HW_TEST == True else 'disabled'}")
+        run_test(ACTIX_PROGRAM_PATH, ACTIX_URL, ACTIX_WS_URL, "actix_log_singleuser")
+        run_test(AXUM_PROGRAM_PATH, AXUM_URL, AXUM_WS_URL, "axum_log_singleuser")
+        run_test(ROCKET_PROGRAM_PATH, ROCKET_URL, ROCKET_WS_URL, "rocket_log_singleuser")
+    except FileNotFoundError as fnf:
+        print("File Doesn't Exist. You need to build executables first. Did you run setup.sh?\n- ", fnf)
+    except Exception as e:
+        print("Unknown Error Occurred: ", e)
 
 if __name__ == "__main__":
     main()

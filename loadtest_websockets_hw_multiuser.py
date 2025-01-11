@@ -83,7 +83,7 @@ def load_test(url, ws_url):
         while not request_queue.empty():
             try:
                 req_type, func, req_url = request_queue.get_nowait()
-                log.append(func(req_url))
+                log.append(datetime.now() + func(req_url))
                 request_queue.task_done()
             except Queue.Empty:
                 break
@@ -165,6 +165,7 @@ def run_test(program_path, url, ws_url, log_file):
 # Main function to run the tests for Actix and Axum
 def main():
     try:
+        print(f"HW_TEST {'enabled' if HW_TEST == True else 'disabled'}")
         run_test(ACTIX_PROGRAM_PATH, ACTIX_URL, ACTIX_WS_URL, "actix_log")
         run_test(AXUM_PROGRAM_PATH, AXUM_URL, AXUM_WS_URL, "axum_log")
         run_test(ROCKET_PROGRAM_PATH, ROCKET_URL, ROCKET_WS_URL, "rocket_log")

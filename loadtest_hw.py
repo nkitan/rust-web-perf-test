@@ -4,13 +4,15 @@ import subprocess
 import os
 import psutil
 
-# Paths to the Actix and Axum program executables
+# Paths to the Actix, Axum and Rocket program executables
 ACTIX_PROGRAM_PATH = "./actix-webserver/target/release/actix-webserver"
 AXUM_PROGRAM_PATH = "./axum-webserver/target/release/axum-webserver"
+ROCKET_PROGRAM_PATH = "./rocket-webserver/target/release/rocket-webserver"
 
-# URL endpoints for Actix and Axum programs
+# URL endpoints for Actix, Axum and Rocket programs
 ACTIX_URL = "http://127.0.0.1:8080/api/logo"
 AXUM_URL = "http://127.0.0.1:8080/api/logo"
+ROCKET_URL = "http://127.0.0.1:8080/api/logo"
 
 # Data to be used in requests
 data = {
@@ -104,6 +106,7 @@ def run_test(program_path, url, log_file):
 def main():
     run_test(ACTIX_PROGRAM_PATH, ACTIX_URL, "actix_log.txt")
     run_test(AXUM_PROGRAM_PATH, AXUM_URL, "axum_log.txt")
+    run_test(ROCKET_PROGRAM_PATH, ROCKET_URL, "rocket_log.txt")
 
 if __name__ == "__main__":
     main()

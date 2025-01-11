@@ -10,15 +10,20 @@ from queue import Queue
 from datetime import datetime
 
 HW_TEST = False
-# Paths to the Actix and Axum program executables
+
+# Paths to the Actix, Axum and Rocket program executables
 ACTIX_PROGRAM_PATH = "./actix-webserver/target/release/actix-webserver"
 AXUM_PROGRAM_PATH = "./axum-webserver/target/release/axum-webserver"
+ROCKET_PROGRAM_PATH = "./rocket-webserver/target/release/rocket-webserver"
 
-# URL endpoints for Actix and Axum programs
+# URL endpoints for Actix, Axum and Rocket programs
 ACTIX_URL = "http://127.0.0.1:8080/api/logo"
 AXUM_URL = "http://127.0.0.1:8080/api/logo"
+ROCKET_URL = "http://127.0.0.1:8080/api/logo"
+
 ACTIX_WS_URL = "ws://127.0.0.1:8080/ws/"
 AXUM_WS_URL = "ws://127.0.0.1:8080/ws/"
+ROCKET_WS_URL = "ws://127.0.0.1:8080/ws/"
 
 # Data to be used in requests
 data = {
@@ -120,12 +125,12 @@ def run_test(program_path, url, ws_url, log_file):
 
     print(f"Running load test for {program_path}...")
     log, duration = load_test(url, ws_url)
-    
+
     # Get the current date and time
     now = datetime.now()
     # Format the current date and time
     formatted_now = now.strftime("%Y-%m-%d-%H:%M:%S")
-    
+
     # Save logs
     with open(f"./logs/{log_file}_{formatted_now}.txt", "w") as f:
         for entry in log:
@@ -159,8 +164,14 @@ def run_test(program_path, url, ws_url, log_file):
 
 # Main function to run the tests for Actix and Axum
 def main():
-    run_test(ACTIX_PROGRAM_PATH, ACTIX_URL, ACTIX_WS_URL, "actix_log")
-    run_test(AXUM_PROGRAM_PATH, AXUM_URL, AXUM_WS_URL, "axum_log")
+    try:
+        run_test(ACTIX_PROGRAM_PATH, ACTIX_URL, ACTIX_WS_URL, "actix_log")
+        run_test(AXUM_PROGRAM_PATH, AXUM_URL, AXUM_WS_URL, "axum_log")
+        run_test(ROCKET_PROGRAM_PATH, ROCKET_URL, ROCKET_WS_URL, "rocket_log")
+    except FileNotFoundError as fnf:
+        print("File Doesn't Exist. You need to build executables first. Did you run setup.sh?\n- ", fnf)
+    except Exception as e:
+        print("Unknown Error Occurred: ", e)
 
 if __name__ == "__main__":
     main()

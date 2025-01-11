@@ -54,7 +54,7 @@ async fn delete_logo(id: web::Path<u32>) -> impl Responder {
 }
 
 // WebSocket endpoint
-async fn ws_index(r: HttpRequest, stream: web::Payload) -> Result<HttpResponse, Error> {
+async fn websocket_handler(r: HttpRequest, stream: web::Payload) -> Result<HttpResponse, Error> {
     ws::start(MyWs {}, &r, stream)
 }
 
@@ -66,7 +66,7 @@ async fn main() -> std::io::Result<()> {
             .service(create_logo)
             .service(update_logo)
             .service(delete_logo)
-            .route("/ws/", web::get().to(ws_index)) // WebSocket route
+            .route("/ws/", web::get().to(websocket_handler)) // WebSocket route
     })
     .bind(("127.0.0.1", 8080))?
     .run()

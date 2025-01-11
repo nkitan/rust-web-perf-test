@@ -7,15 +7,21 @@ import threading
 from datetime import datetime
 
 HW_TEST = False
-# Paths to the Actix and Axum program executables
+
+# Paths to the Actix, Axum and Rocket program executables
 ACTIX_PROGRAM_PATH = "./actix-webserver/target/release/actix-webserver"
 AXUM_PROGRAM_PATH = "./axum-webserver/target/release/axum-webserver"
+ROCKET_PROGRAM_PATH = "./rocket-webserver/target/release/rocket-webserver"
 
-# URL endpoints for Actix and Axum programs
+# URL endpoints for Actix, Axum and Rocket programs
 ACTIX_URL = "http://127.0.0.1:8080/api/logo"
 AXUM_URL = "http://127.0.0.1:8080/api/logo"
+ROCKET_URL = "http://127.0.0.1:8080/api/logo"
+
 ACTIX_WS_URL = "ws://127.0.0.1:8080/ws/"
-AXUM_WS_URL = "ws://127.0.0.1:8080/ws"
+AXUM_WS_URL = "ws://127.0.0.1:8080/ws/"
+ROCKET_WS_URL = "ws://127.0.0.1:8080/ws/"
+
 
 # Data to be used in requests
 data = {
@@ -143,6 +149,7 @@ def main():
     print(f"HW_TEST {'enabled' if HW_TEST == True else 'disabled'}")
     run_test(ACTIX_PROGRAM_PATH, ACTIX_URL, ACTIX_WS_URL, "actix_log_singleuser")
     run_test(AXUM_PROGRAM_PATH, AXUM_URL, AXUM_WS_URL, "axum_log_singleuser")
+    run_test(ROCKET_PROGRAM_PATH, ROCKET_URL, ROCKET_WS_URL, "rocket_log_singleuser")
 
 if __name__ == "__main__":
     main()

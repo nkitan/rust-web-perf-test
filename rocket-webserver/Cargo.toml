@@ -1,0 +1,12 @@
+[package]
+name = "rocket-webserver"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rocket = { version = "0.5.1", features = ["json"] }
+rocket_ws = { package = "rocket_ws", version = "0.1.0" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+futures-util = "0.3"
